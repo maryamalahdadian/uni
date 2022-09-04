@@ -1,20 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { I18nManager } from "react-native";
+import AnimatedSplash from "react-native-animated-splash-screen";
+import { Provider } from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
+import getFonts from "./app/utils/fonts";
+import { AppLoading } from "expo";
+import StackNavigator from "./app/containers/StackNavigator";
+import { store } from "./app/store";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+//* Support for RTL
+I18nManager.allowRTL(true);
+I18nManager.forceRTL(true);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => {
+    
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(true);
+        }, 2000);
+    }, []);
+
+    
+        return (
+            <AnimatedSplash
+                translucent={true}
+                isLoaded={loading}
+                logoImage={require("./app/assets/logoooo.webp")}
+                backgroundColor={"#262626"}
+                logoHeight={250}
+                logoWidth={250}
+            >
+                <NavigationContainer>
+                    <Provider store={store}>
+                        <StackNavigator />
+                    </Provider>
+                </NavigationContainer>
+            </AnimatedSplash>
+        );
+    } 
+
+export default App;
